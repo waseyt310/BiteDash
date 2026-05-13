@@ -1,0 +1,6 @@
+{
+  "name": "BiteDash",
+  "description": "A premium, fully-functional food delivery platform with real-time tracking, AI recommendations, and multi-role dashboards.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["food_delivery", "real_time_tracking", "ai_recommendations"]
+}
