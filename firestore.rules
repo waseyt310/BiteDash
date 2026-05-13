@@ -1,6 +1,11 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Default deny (Safety Net)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
     // Helper functions
     function isSignedIn() {
       return request.auth != null;
@@ -56,7 +61,7 @@ service cloud.firestore {
       );
     }
 
-    // Default deny
+    // Default deny (Safety Net)
     match /{document=**} {
       allow read, write: if false;
     }
