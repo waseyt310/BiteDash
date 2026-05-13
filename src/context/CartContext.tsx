@@ -34,8 +34,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((prev) => {
       // Check if item from different restaurant
       if (prev.length > 0 && prev[0].restaurantId !== newItem.restaurantId) {
-        if (confirm("Clear your cart and add items from this restaurant instead?")) {
-          return [{ ...newItem, quantity: 1 }];
+        if (confirm("Clear your cart and add items from this store instead?")) {
+          return [{ ...newItem, quantity: newItem.quantity || 1 }];
         }
         return prev;
       }
@@ -43,10 +43,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const existing = prev.find((i) => i.id === newItem.id);
       if (existing) {
         return prev.map((i) =>
-          i.id === newItem.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === newItem.id ? { ...i, quantity: i.quantity + (newItem.quantity || 1) } : i
         );
       }
-      return [...prev, { ...newItem, quantity: 1 }];
+      return [...prev, { ...newItem, quantity: newItem.quantity || 1 }];
     });
   };
 

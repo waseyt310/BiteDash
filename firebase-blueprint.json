@@ -73,6 +73,49 @@
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["customerId", "restaurantId", "items", "total", "status"]
+    },
+    "GroceryCategory": {
+      "title": "Grocery Category",
+      "description": "Category for grocery items",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "icon": { "type": "string" }
+      }
+    },
+    "GroceryProduct": {
+      "title": "Grocery Product",
+      "description": "Individual grocery item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "brand": { "type": "string" },
+        "category": { "type": "string" },
+        "price": { "type": "number" },
+        "originalPrice": { "type": "number" },
+        "unit": { "type": "string" },
+        "image": { "type": "string" },
+        "inStock": { "type": "boolean" },
+        "deliveryEta": { "type": "string" }
+      }
+    },
+    "ExclusiveDeal": {
+      "title": "Exclusive Deal",
+      "description": "Premium deal or item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "image": { "type": "string" },
+        "category": { "type": "string" },
+        "discount": { "type": "number" },
+        "rating": { "type": "number" },
+        "reviews": { "type": "number" },
+        "endsAt": { "type": "number" }
+      }
     }
   },
   "firestore": {
@@ -91,6 +134,18 @@
     "/orders/{orderId}": {
       "schema": "Order",
       "description": "Platform orders"
+    },
+    "/grocery_categories/{categoryId}": {
+      "schema": "GroceryCategory",
+      "description": "Grocery categories"
+    },
+    "/groceries/{productId}": {
+      "schema": "GroceryProduct",
+      "description": "Grocery products"
+    },
+    "/exclusives/{dealId}": {
+      "schema": "ExclusiveDeal",
+      "description": "Exclusive deals and premium items"
     }
   }
 }

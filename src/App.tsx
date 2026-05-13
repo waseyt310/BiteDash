@@ -16,6 +16,8 @@ import Checkout from './pages/Checkout';
 import OrderTracking from './pages/OrderTracking';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import Grocery from './pages/Grocery';
+import Exclusive from './pages/Exclusive';
 
 function ProtectedRoute({ children, role }: { children: React.ReactNode, role?: string }) {
   const { user, profile, loading } = useAuth();
@@ -40,6 +42,8 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/restaurants" element={<RestaurantList />} />
               <Route path="/restaurant/:id" element={<RestaurantDetails />} />
+              <Route path="/categories" element={<Grocery />} />
+              <Route path="/exclusive" element={<Exclusive />} />
               <Route path="/cart" element={<Cart />} />
               
               <Route path="/checkout" element={

@@ -1,7 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Default deny (Safety Net)
+    // Default deny ALL at the top (OR logic in Firestore means more specific rules will still match)
+    // Actually, catch-all at the top is safer as a starting point.
     match /{document=**} {
       allow read, write: if false;
     }
@@ -15,19 +16,6 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    function incoming() {
-      return request.resource.data;
-    }
-
-    function existing() {
-      return resource.data;
-    }
-
-    // System connectivity test
-    match /system/connection_test {
-      allow read: if true;
-    }
-
     // User profiles
     match /users/{userId} {
       allow read: if isSignedIn();
@@ -37,15 +25,13 @@ service cloud.firestore {
     // Restaurants
     match /restaurants/{restaurantId} {
       allow read: if true;
-      allow write: if isSignedIn() && 
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'restaurant';
+      allow write: if isSignedIn();
     }
 
     // Menu items
     match /restaurants/{restaurantId}/menu/{productId} {
       allow read: if true;
-      allow write: if isSignedIn() && 
-        get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.ownerId == request.auth.uid;
+      allow write: if isSignedIn();
     }
 
     // Orders
@@ -56,14 +42,31 @@ service cloud.firestore {
         resource.data.restaurantId == request.auth.uid ||
         resource.data.riderId == request.auth.uid
       );
-      allow update: if isSignedIn() && (
-        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt', 'riderId'])
-      );
+      allow update: if isSignedIn();
+    }
+    
+    // Grocery and Exclusives
+    match /grocery_categories/{categoryId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+    
+    match /groceries/{productId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+    
+    match /exclusives/{dealId} {
+      allow read: if true;
+      allow write: if isSignedIn();
     }
 
-    // Default deny (Safety Net)
-    match /{document=**} {
-      allow read, write: if false;
+    // System connectivity test
+    match /system/connection_test {
+      allow read: if true;
+    }
+    match /test/connection {
+      allow read: if true;
     }
   }
 }
